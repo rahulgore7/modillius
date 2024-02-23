@@ -1,6 +1,6 @@
 import mongoose, { Mongoose } from "mongoose";
 
-const MONGODb_URL = process.env.MONGODB_URL;
+const MONGODB_URL = process.env.MONGODB_URL;
 
 interface MongooseConnection {
   conn: Mongoose | null;
@@ -16,19 +16,19 @@ if (!cached) {
   };
 }
 
-export const connnectToDatabase = async () => {
+export const connectToDatabase = async () => {
   if (cached.conn) return cached.conn;
 
-  if (!MONGODb_URL) throw new Error("MONGODB_URL is not defined");
+  if (!MONGODB_URL) throw new Error("Missing MONGODB_URL");
 
   cached.promise =
     cached.promise ||
-    mongoose.connect(MONGODb_URL, {
-      dbName: "Modillius",
+    mongoose.connect(MONGODB_URL, {
+      dbName: "modillius",
       bufferCommands: false,
     });
 
-    cached.conn = await cached.promise;
+  cached.conn = await cached.promise;
 
-    return cached.conn;
+  return cached.conn;
 };
